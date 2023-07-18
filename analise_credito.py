@@ -3,6 +3,7 @@ import numpy as np
 import seaborn as sns
 import matplotlib.pyplot as plt
 import plotly.express as px
+from sklearn.preprocessing import StandardScaler
 
 
 base_credit = pd.read_csv('credit_data.csv')
@@ -40,4 +41,21 @@ grafico.show()
 #Divisao entre previsores e classe (pre processamento dos dados)
 X_credit = base_credit.iloc[: , 1:4].values
 Y_credit = base_credit.iloc[: , 4].values
+
+
+#normalizando/padronizando os valores de x_credit
+scaler_credit = StandardScaler()
+X_credit = scaler_credit.fit_transform(X_credit)
+
+max_income = X_credit[:, 0].max()
+min_income = X_credit[:,0].min()
+
+max_age = X_credit[:,1].max()
+min_age = X_credit[:,1].min()
+
+max_loan = X_credit[:,2].max()
+min_loan = X_credit[:,2].min()
+
+print(max_income, max_age, max_loan)
+print(min_income, min_age, min_loan)
 
