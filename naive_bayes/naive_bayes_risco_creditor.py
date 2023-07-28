@@ -1,6 +1,7 @@
 import pandas as pd
 from sklearn.preprocessing import LabelEncoder
 from sklearn.naive_bayes import GaussianNB
+from sklearn.metrics import accuracy_score, confusion_matrix, classification_report
 import pickle
 
 base_risco_credito = pd.read_csv('risco_credito.csv')
@@ -30,32 +31,3 @@ naive_risco_credito.fit(X_risco_credito, Y_risco_credito)
 #historia RUIM(2), divida ALTA(0), garantias ADEQUADA(0), renda <15 (0)
 
 previsao = naive_risco_credito.predict([[0,0,1,2], [2,0,0,0]])
-
-
-#Base de dados credit data
-with open('../pre_processamento_dados/credit.pkl', 'rb') as f:
-    X_credit_treinamento, Y_credit_treinamento, X_credit_teste, Y_credit_teste = pickle.load(f)
-
-naive_credit_data = GaussianNB()
-naive_credit_data.fit(X_credit_treinamento, Y_credit_treinamento)
-
-previsoes = naive_credit_data.predict(X_credit_teste)
-
-#Comparando as previsoes com o Y_credit_teste
-
-from sklearn.metrics import accuracy_score, confusion_matrix, classification_report
-
-accuracy_score(Y_credit_teste, previsoes)
-
-confusion_matrix(Y_credit_teste, previsoes)
-
-from yellowbrick.classifier import ConfusionMatrix
-
-cm = ConfusionMatrix(naive_credit_data)
-cm.fit(X_credit_treinamento, Y_credit_treinamento)
-cm.score(X_credit_teste, Y_credit_teste)
-
-print(classification_report(Y_credit_teste, previsoes))
-
-#Base de dados census
-
